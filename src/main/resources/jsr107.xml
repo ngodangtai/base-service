@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<config xmlns="http://www.ehcache.org/v3"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core.xsd">
+    <cache alias="ApplicationSearchService#getApplications">
+        <expiry>
+            <ttl>3600</ttl>
+        </expiry>
+        <resources>
+            <offheap unit="MB">2</offheap>
+        </resources>
+    </cache>
+    <cache alias="RedisCacheService#getApplicationView">
+        <expiry>
+            <ttl>3600</ttl>
+        </expiry>
+        <resources>
+            <offheap unit="MB">2</offheap>
+        </resources>
+    </cache>
+</config>

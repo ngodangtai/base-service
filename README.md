@@ -32,7 +32,7 @@ mvn spring-boot:run -DLog4jContextSelector=org.apache.logging.log4j.core.async.A
 java -jar target/service-base-0.1.2-SNAPSHOT.jar --Log4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector --AsyncLogger.WaitStrategy=busyspin
 
 ## Step deploy
-Git: https://github.com/ngodangtai/base-service.git
+Git: https://github.com/ngodangtai/service-base.git
 branch: release/V1.0
 Database: Nan
 Configs:

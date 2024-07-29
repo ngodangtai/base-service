@@ -1,0 +1,25 @@
+includeQueryString: true
+includeClientInfo: true
+includeHeaders: true
+includePayload: true
+includeResponseBody: true
+includeResponseStatus: true
+beforeMessagePrefix: Request
+afterMessagePrefix: Response
+includedPayloadPaths:
+  - path: '/**'
+    method: null
+  - path: '/**'
+    method: null
+includedResponseBodyPaths:
+  - path: '/**'
+    method: null
+  - path: '/**'
+    method: null
+ignoredLogPaths:
+  - path: '/actuator/**'
+    method: GET
+  - path: '/healthcheck/**'
+    method: GET
+ignoredTokenAttributes:
+  - client_key

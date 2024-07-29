@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+	<!-- Scrum team that is owner of this service, replace value with your scrum team name -->
+	<springProperty scope="context"  name="OWNERSHIP_TEAM" source="scrum.team.name" defaultValue="ibond"/>
+	<!-- Property tag must be appeared before include tag as they are being used by included files -->
+	<springProperty scope="context" name="APPLICATION_NAME" source="spring.application.name"/>
+	<!--Default SpringBoot log format for local development-->
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+			<charset>utf8</charset>
+		</encoder>
+	</appender>
+
+	<!-- Application JSON log console appender -->
+	<appender name="APP-CONSOLE-JSON" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<findAndRegisterJacksonModules>false</findAndRegisterJacksonModules>
+			<providers>
+				<timestamp/>
+				<logLevel>
+					<fieldName>log.level</fieldName>
+				</logLevel>
+				<pattern>
+					<pattern>{"organization.name":"${OWNERSHIP_TEAM}","service.name":
+						"${APPLICATION_NAME}","event.dataset":"application"}
+					</pattern>
+				</pattern>
+				<message/>
+				<threadName>
+					<fieldName>process.thread.name</fieldName>
+				</threadName>
+				<loggerName>
+					<fieldName>log.logger</fieldName>
+				</loggerName>
+				<callerData>
+					<classFieldName>[ignore]</classFieldName>
+					<methodFieldName>log.origin.function</methodFieldName>
+					<lineFieldName>log.origin.file.line</lineFieldName>
+					<fileFieldName>log.origin.file.name</fileFieldName>
+				</callerData>
+				<mdc/>
+				<arguments/>
+				<stackHash>
+					<fieldName>error.stack_hash</fieldName>
+				</stackHash>
+				<stackTrace>
+					<fieldName>error.stack_trace</fieldName>
+					<throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+						<maxDepthPerThrowable>30</maxDepthPerThrowable>
+						<maxLength>2048</maxLength>
+						<shortenedClassNameLength>20</shortenedClassNameLength>
+						<rootCauseFirst>true</rootCauseFirst>
+						<inlineHash>false</inlineHash>
+						<!-- generated class names -->
+						<exclude>\$\$FastClassByCGLIB\$\$</exclude>
+						<exclude>\$\$EnhancerBySpringCGLIB\$\$</exclude>
+						<exclude>^sun\.reflect\..*\.invoke</exclude>
+						<!-- JDK internals -->
+						<exclude>^com\.sun\.</exclude>
+						<exclude>^sun\.net\.</exclude>
+						<!-- dynamic invocation -->
+						<exclude>^net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
+						<exclude>^org\.springframework\.cglib\.</exclude>
+						<exclude>^org\.springframework\.transaction\.</exclude>
+						<exclude>^org\.springframework\.validation\.</exclude>
+						<exclude>^org\.springframework\.app\.</exclude>
+						<exclude>^org\.springframework\.aop\.</exclude>
+						<exclude>^java\.lang\.reflect\.Method\.invoke</exclude>
+						<!-- Spring plumbing -->
+						<exclude>^org\.springframework\.ws\..*\.invoke</exclude>
+						<exclude>^org\.springframework\.ws\.transport\.</exclude>
+						<exclude>^org\.springframework\.ws\.soap\.saaj\.SaajSoapMessage\.</exclude>
+						<exclude>^org\.springframework\.ws\.client\.core\.WebServiceTemplate\.</exclude>
+						<exclude>^org\.springframework\.web\.filter\.</exclude>
+						<!-- Tomcat internals -->
+						<exclude>^org\.apache\.tomcat\.</exclude>
+						<exclude>^org\.apache\.catalina\.</exclude>
+						<exclude>^org\.apache\.coyote\.</exclude>
+						<exclude>^java\.util\.concurrent\.ThreadPoolExecutor\.runWorker</exclude>
+						<exclude>^java\.lang\.Thread\.run$</exclude>
+					</throwableConverter>
+				</stackTrace>
+			</providers>
+		</encoder>
+	</appender>
+	<!-- Audit JSON log console appender -->
+	<appender name="AUDIT-CONSOLE-JSON" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<findAndRegisterJacksonModules>false</findAndRegisterJacksonModules>
+			<providers>
+				<timestamp/>
+				<logLevel>
+					<fieldName>log.level</fieldName>
+				</logLevel>
+				<pattern>
+					<pattern>{"organization.name":"${OWNERSHIP_TEAM}","service.name":
+						"${APPLICATION_NAME}","event.dataset":"audit"}
+					</pattern>
+				</pattern>
+				<message/>
+				<threadName>
+					<fieldName>process.thread.name</fieldName>
+				</threadName>
+				<loggerName>
+					<fieldName>log.logger</fieldName>
+				</loggerName>
+				<callerData>
+					<classFieldName>[ignore]</classFieldName>
+					<methodFieldName>log.origin.function</methodFieldName>
+					<lineFieldName>log.origin.file.line</lineFieldName>
+					<fileFieldName>log.origin.file.name</fileFieldName>
+				</callerData>
+				<mdc/>
+				<arguments/>
+				<stackHash>
+					<fieldName>error.stack_hash</fieldName>
+				</stackHash>
+				<stackTrace>
+					<fieldName>error.stack_trace</fieldName>
+					<throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+						<maxDepthPerThrowable>30</maxDepthPerThrowable>
+						<maxLength>2048</maxLength>
+						<shortenedClassNameLength>20</shortenedClassNameLength>
+						<rootCauseFirst>true</rootCauseFirst>
+						<inlineHash>false</inlineHash>
+						<!-- generated class names -->
+						<exclude>\$\$FastClassByCGLIB\$\$</exclude>
+						<exclude>\$\$EnhancerBySpringCGLIB\$\$</exclude>
+						<exclude>^sun\.reflect\..*\.invoke</exclude>
+						<!-- JDK internals -->
+						<exclude>^com\.sun\.</exclude>
+						<exclude>^sun\.net\.</exclude>
+						<!-- dynamic invocation -->
+						<exclude>^net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
+						<exclude>^org\.springframework\.cglib\.</exclude>
+						<exclude>^org\.springframework\.transaction\.</exclude>
+						<exclude>^org\.springframework\.validation\.</exclude>
+						<exclude>^org\.springframework\.app\.</exclude>
+						<exclude>^org\.springframework\.aop\.</exclude>
+						<exclude>^java\.lang\.reflect\.Method\.invoke</exclude>
+						<!-- Spring plumbing -->
+						<exclude>^org\.springframework\.ws\..*\.invoke</exclude>
+						<exclude>^org\.springframework\.ws\.transport\.</exclude>
+						<exclude>^org\.springframework\.ws\.soap\.saaj\.SaajSoapMessage\.</exclude>
+						<exclude>^org\.springframework\.ws\.client\.core\.WebServiceTemplate\.</exclude>
+						<exclude>^org\.springframework\.web\.filter\.</exclude>
+						<!-- Tomcat internals -->
+						<exclude>^org\.apache\.tomcat\.</exclude>
+						<exclude>^org\.apache\.catalina\.</exclude>
+						<exclude>^org\.apache\.coyote\.</exclude>
+						<exclude>^java\.util\.concurrent\.ThreadPoolExecutor\.runWorker</exclude>
+						<exclude>^java\.lang\.Thread\.run$</exclude>
+					</throwableConverter>
+				</stackTrace>
+			</providers>
+		</encoder>
+	</appender>
+
+	<logger name="com.company" level="debug"/>
+	<logger name="com.company.module.trading.logging" level="trace"/>
+	<logger name="org.springframework" level="WARN"/>
+	<logger name="net.sf.ehcache" level="ERROR" />
+
+	<!-- Use for PROD and UAT environment, update profile corresponding -->
+	<springProfile name="prod">
+		<!-- JSON app log file appender -->
+		<appender name="APP-FILE-JSON" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>/var/log/${APPLICATION_NAME}/${APPLICATION_NAME}.log</file>
+			<append>true</append>
+			<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+				<!-- rollover daily -->
+				<fileNamePattern>/var/log/${APPLICATION_NAME}/${APPLICATION_NAME}-%d{yyyy-MM-dd}.%i.txt
+				</fileNamePattern>
+				<!-- each file should be at most 1GB, keep 30 days worth of history, but at most 30GB -->
+				<maxFileSize>1024MB</maxFileSize>
+				<maxHistory>30</maxHistory>
+				<totalSizeCap>10GB</totalSizeCap>
+			</rollingPolicy>
+			<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+				<findAndRegisterJacksonModules>false</findAndRegisterJacksonModules>
+				<providers>
+					<timestamp/>
+					<logLevel>
+						<fieldName>log.level</fieldName>
+					</logLevel>
+					<pattern>
+						<pattern>{"organization.name":"${OWNERSHIP_TEAM}","service.name":
+							"${APPLICATION_NAME}","event.dataset":"application"}
+						</pattern>
+					</pattern>
+					<message/>
+					<threadName>
+						<fieldName>process.thread.name</fieldName>
+					</threadName>
+					<loggerName>
+						<fieldName>log.logger</fieldName>
+					</loggerName>
+					<callerData>
+						<classFieldName>[ignore]</classFieldName>
+						<methodFieldName>log.origin.function</methodFieldName>
+						<lineFieldName>log.origin.file.line</lineFieldName>
+						<fileFieldName>log.origin.file.name</fileFieldName>
+					</callerData>
+					<mdc/>
+					<arguments/>
+					<stackHash>
+						<fieldName>error.stack_hash</fieldName>
+					</stackHash>
+					<stackTrace>
+						<fieldName>error.stack_trace</fieldName>
+						<throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+							<maxDepthPerThrowable>30</maxDepthPerThrowable>
+							<maxLength>2048</maxLength>
+							<shortenedClassNameLength>20</shortenedClassNameLength>
+							<rootCauseFirst>true</rootCauseFirst>
+							<inlineHash>false</inlineHash>
+							<!-- generated class names -->
+							<exclude>\$\$FastClassByCGLIB\$\$</exclude>
+							<exclude>\$\$EnhancerBySpringCGLIB\$\$</exclude>
+							<exclude>^sun\.reflect\..*\.invoke</exclude>
+							<!-- JDK internals -->
+							<exclude>^com\.sun\.</exclude>
+							<exclude>^sun\.net\.</exclude>
+							<!-- dynamic invocation -->
+							<exclude>^net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
+							<exclude>^org\.springframework\.cglib\.</exclude>
+							<exclude>^org\.springframework\.transaction\.</exclude>
+							<exclude>^org\.springframework\.validation\.</exclude>
+							<exclude>^org\.springframework\.app\.</exclude>
+							<exclude>^org\.springframework\.aop\.</exclude>
+							<exclude>^java\.lang\.reflect\.Method\.invoke</exclude>
+							<!-- Spring plumbing -->
+							<exclude>^org\.springframework\.ws\..*\.invoke</exclude>
+							<exclude>^org\.springframework\.ws\.transport\.</exclude>
+							<exclude>^org\.springframework\.ws\.soap\.saaj\.SaajSoapMessage\.</exclude>
+							<exclude>^org\.springframework\.ws\.client\.core\.WebServiceTemplate\.</exclude>
+							<exclude>^org\.springframework\.web\.filter\.</exclude>
+							<!-- Tomcat internals -->
+							<exclude>^org\.apache\.tomcat\.</exclude>
+							<exclude>^org\.apache\.catalina\.</exclude>
+							<exclude>^org\.apache\.coyote\.</exclude>
+							<exclude>^java\.util\.concurrent\.ThreadPoolExecutor\.runWorker</exclude>
+							<exclude>^java\.lang\.Thread\.run$</exclude>
+						</throwableConverter>
+					</stackTrace>
+				</providers>
+			</encoder>
+		</appender>
+		<!-- JSON audit log file appender -->
+		<appender name="AUDIT-FILE-JSON" class="ch.qos.logback.core.rolling.RollingFileAppender">
+			<file>/var/log/${APPLICATION_NAME}/${APPLICATION_NAME}-audit.log</file>
+			<append>true</append>
+			<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+				<!-- rollover daily -->
+				<fileNamePattern>/var/log/audit/${APPLICATION_NAME}/audit-${APPLICATION_NAME}-%d{yyyy-MM-dd}.%i.txt
+				</fileNamePattern>
+				<!-- each file should be at most 1GB, keep 30 days worth of history, but at most 30GB -->
+				<maxFileSize>1024MB</maxFileSize>
+				<maxHistory>200</maxHistory>
+				<totalSizeCap>10GB</totalSizeCap>
+			</rollingPolicy>
+			<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+				<findAndRegisterJacksonModules>false</findAndRegisterJacksonModules>
+				<providers>
+					<timestamp/>
+					<logLevel>
+						<fieldName>log.level</fieldName>
+					</logLevel>
+					<pattern>
+						<pattern>{"organization.name":"${OWNERSHIP_TEAM}","service.name":
+							"${APPLICATION_NAME}","event.dataset":"audit"}
+						</pattern>
+					</pattern>
+					<message/>
+					<threadName>
+						<fieldName>process.thread.name</fieldName>
+					</threadName>
+					<loggerName>
+						<fieldName>log.logger</fieldName>
+					</loggerName>
+					<callerData>
+						<classFieldName>[ignore]</classFieldName>
+						<methodFieldName>log.origin.function</methodFieldName>
+						<lineFieldName>log.origin.file.line</lineFieldName>
+						<fileFieldName>log.origin.file.name</fileFieldName>
+					</callerData>
+					<mdc/>
+					<arguments/>
+					<stackHash>
+						<fieldName>error.stack_hash</fieldName>
+					</stackHash>
+					<stackTrace>
+						<fieldName>error.stack_trace</fieldName>
+						<throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+							<maxDepthPerThrowable>30</maxDepthPerThrowable>
+							<maxLength>2048</maxLength>
+							<shortenedClassNameLength>20</shortenedClassNameLength>
+							<rootCauseFirst>true</rootCauseFirst>
+							<inlineHash>false</inlineHash>
+							<!-- generated class names -->
+							<exclude>\$\$FastClassByCGLIB\$\$</exclude>
+							<exclude>\$\$EnhancerBySpringCGLIB\$\$</exclude>
+							<exclude>^sun\.reflect\..*\.invoke</exclude>
+							<!-- JDK internals -->
+							<exclude>^com\.sun\.</exclude>
+							<exclude>^sun\.net\.</exclude>
+							<!-- dynamic invocation -->
+							<exclude>^net\.sf\.cglib\.proxy\.MethodProxy\.invoke</exclude>
+							<exclude>^org\.springframework\.cglib\.</exclude>
+							<exclude>^org\.springframework\.transaction\.</exclude>
+							<exclude>^org\.springframework\.validation\.</exclude>
+							<exclude>^org\.springframework\.app\.</exclude>
+							<exclude>^org\.springframework\.aop\.</exclude>
+							<exclude>^java\.lang\.reflect\.Method\.invoke</exclude>
+							<!-- Spring plumbing -->
+							<exclude>^org\.springframework\.ws\..*\.invoke</exclude>
+							<exclude>^org\.springframework\.ws\.transport\.</exclude>
+							<exclude>^org\.springframework\.ws\.soap\.saaj\.SaajSoapMessage\.</exclude>
+							<exclude>^org\.springframework\.ws\.client\.core\.WebServiceTemplate\.</exclude>
+							<exclude>^org\.springframework\.web\.filter\.</exclude>
+							<!-- Tomcat internals -->
+							<exclude>^org\.apache\.tomcat\.</exclude>
+							<exclude>^org\.apache\.catalina\.</exclude>
+							<exclude>^org\.apache\.coyote\.</exclude>
+							<exclude>^java\.util\.concurrent\.ThreadPoolExecutor\.runWorker</exclude>
+							<exclude>^java\.lang\.Thread\.run$</exclude>
+						</throwableConverter>
+					</stackTrace>
+				</providers>
+			</encoder>
+		</appender>
+		<logger name="com.company.module.logging" additivity="false" level="INFO">
+			<appender-ref ref="AUDIT-FILE-JSON"/>
+		</logger>
+		<root level="info">
+			<appender-ref ref="APP-FILE-JSON"/>
+		</root>
+	</springProfile>
+	<!-- Use for SIT environment -->
+	<springProfile name="cloud_sit|cloud_test|cloud_uat">
+		<root level="info">
+			<appender-ref ref="APP-CONSOLE-JSON"/>
+		</root>
+	</springProfile>
+	<!-- Use for local development -->
+	<springProfile name="default">
+		<root level="info">
+			<appender-ref ref="CONSOLE"/>
+		</root>
+	</springProfile>
+</configuration>

@@ -1,0 +1,70 @@
+ARG JAR_FILE
+ARG JAR_DIRECTORY
+
+# 1st-stage: build (compile, test)
+# Docker image that build a Spring Boot application
+FROM hub.company.com.vn/build/spring:2.5.14 AS MAVEN_BUILD
+
+ARG POM_FILE=pom.xml
+ARG SRC_DIR=src/
+
+# Copy pom.xml & Dockerfile
+COPY ${POM_FILE} .
+
+#set time
+USER root
+
+ENV TZ=Asia/Ho_Chi_Minh
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+# Download& cache Maven dependencies
+RUN mvn -B -s $HOME/.m2/settings.xml dependency:go-offline
+
+# Copy source code
+COPY ${SRC_DIR} ./${SRC_DIR}
+
+# Show arch
+RUN echo "Running on $(uname -m)"
+
+# Build Spring Boot app& Docker image then push to Docker Registry
+RUN mvn -e -B package --settings $HOME/.m2/settings.xml -DskipTests
+
+# 2nd-stage: copy file to nexus
+FROM scratch AS ARTIFACT
+
+ARG JAR_FILE=base-app.jar
+ARG JAR_DIRECTORY=target
+
+COPY --from=MAVEN_BUILD /home/jboss/build/${JAR_DIRECTORY}/*.jar .
+
+
+# 3rd-stage: package
+# Docker image that contains a Spring Boot application
+FROM hub.company.com.vn/base/tcnative/openjdk-8-rhel8-__BASEIMAGE_ARCH__:latest
+
+ARG JAR_FILE=base-app.jar
+ARG JAR_DIRECTORY=target
+
+USER root
+
+RUN mkdir -p /var/log/service-base
+RUN mkdir -p /opt/cert/service-base
+RUN chown -R $USER_NAME:$USER_NAME /var/log/service-base
+RUN chown -R $USER_NAME:$USER_NAME /opt/cert/service-base
+# Absolute path to the JAR file to be launched when a Docker container is started
+ENV JAR_APP=${JAR_FILE}
+
+# Add Certificate for SSL
+COPY private.keystore $JAR_PATH/cert/private.keystore
+COPY --chown=$USER_NAME:$USER_NAME private_key.der $JAR_PATH/cert/private_key.der
+
+# Copy all the static contents to be included in the Docker image
+COPY --chown=$USER_NAME:$USER_NAME --from=MAVEN_BUILD /home/jboss/build/${JAR_DIRECTORY}/*.jar $JAR_PATH/${JAR_FILE}
+
+# Expose port
+EXPOSE ${EXPOSE_PORTS}
+
+# Show arch
+RUN echo "Running on $(uname -m)"
+
+ENTRYPOINT [ "sh", "-c", "source $JAR_PATH/override-env.sh && cd $JAR_PATH && java $JAVA_OPTS -Dreactor.bufferSize.small=8192 -Djava.util.concurrent.ForkJoinPool.common.parallelism=100 -jar $JAR_APP" ]
