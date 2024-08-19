@@ -2,7 +2,7 @@ package com.company.module.manager;
 
 import com.company.module.request.ApplicationSearchReq;
 import com.company.module.request.SearchReq;
-import com.company.module.service.ApplicationSearchService;
+import com.company.module.service.table.ApplicationSearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

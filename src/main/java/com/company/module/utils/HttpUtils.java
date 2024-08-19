@@ -25,10 +25,19 @@ public class HttpUtils {
     private final ObjectMapper objectMapper;
     private final RestTemplate restTemplate;
 
+    private void logInfo(String format, Object... objects) {
+        log.info(format, objects);
+    }
+
+    private <T> boolean isSuccess(ResponseEntity<T> responseEntity) {
+        HttpStatus httpStatus = HttpStatus.valueOf(responseEntity.getStatusCode().value());
+        return HttpStatus.Series.SUCCESSFUL.equals(httpStatus.series());
+    }
+
     public <T> T execGet(String url, Class<T> type, Map<String, Object> uriVariables) {
         try {
             ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class, uriVariables);
-            log.info(LOG3, url, uriVariables, responseEntity.getStatusCode());
+            logInfo(LOG3, url, uriVariables, responseEntity.getStatusCode());
             return objectMapper.readValue(responseEntity.getBody(), type);
         } catch (Exception e) {
             String errorLog = String.format(LOG1, url, uriVariables, e.getMessage());
@@ -39,7 +48,7 @@ public class HttpUtils {
     public <T> T execGet(String url, Class<T> type, Object... uriVariables) {
         try {
             ResponseEntity<String> responseEntity = restTemplate.getForEntity(url, String.class, uriVariables);
-            log.info(LOG3, url, uriVariables, responseEntity.getStatusCode());
+            logInfo(LOG3, url, uriVariables, responseEntity.getStatusCode());
             return objectMapper.readValue(responseEntity.getBody(), type);
         } catch (Exception e) {
             String errorLog = String.format(LOG1, url, Arrays.toString(uriVariables), e.getMessage());
@@ -47,10 +56,10 @@ public class HttpUtils {
         }
     }
 
-    public <T, E> T execPost(String url, Class<T> type, E requestBody, Object... uriVariables) {
+    public <T, R> T execPost(String url, Class<T> type, R requestBody, Object... uriVariables) {
         try {
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestBody, String.class, uriVariables);
-            log.info(LOG4, url, requestBody, uriVariables, responseEntity.getStatusCode());
+            logInfo(LOG4, url, requestBody, uriVariables, responseEntity.getStatusCode());
             if (!responseEntity.getStatusCode().is2xxSuccessful()) {
                 throw new BaseException(ErrorCode.UNKNOWN_ERROR, new StringBuilder(String.format("call api: %s, request: %s, variables: %s -> not success!", url, requestBody, Arrays.toString(uriVariables))));
             }
@@ -65,7 +74,7 @@ public class HttpUtils {
     public <E> void execPost(String url, E requestBody, Object... uriVariables) {
         try {
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(url, requestBody, String.class, uriVariables);
-            log.info(LOG4, url, requestBody, uriVariables, responseEntity.getStatusCode());
+            logInfo(LOG4, url, requestBody, uriVariables, responseEntity.getStatusCode());
             if (!responseEntity.getStatusCode().is2xxSuccessful()) {
                 throw new BaseException(null, ErrorCode.UNKNOWN_ERROR, new StringBuilder(String.format("call api: %s, request: %s, variables: %s -> not success!", url, requestBody, Arrays.toString(uriVariables))));
             }
@@ -78,7 +87,7 @@ public class HttpUtils {
     public <E> void execPut(String url, E requestBody, Object... uriVariables) {
         try {
             restTemplate.put(url, requestBody, uriVariables);
-            log.info(LOG4, url, requestBody, uriVariables, HttpStatus.OK);
+            logInfo(LOG4, url, requestBody, uriVariables, HttpStatus.OK);
         } catch (Exception e) {
             String errorLog = String.format(LOG2, url, requestBody, Arrays.toString(uriVariables), e.getMessage());
             throw new BaseException(e, ErrorCode.UNKNOWN_ERROR, new StringBuilder(errorLog));

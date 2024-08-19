@@ -26,6 +26,8 @@ public abstract class AbstractPublisher<T extends BaseEvent<?>> implements Publi
         } catch (Exception ex) {
             log.error("Publish event: {} - error: {}", MapperUtils.writeValueAsString(baseEvent), ex.getMessage(), ex);
             throw ex;
+        } finally {
+            ContextHolder.clearContext();
         }
     }
 

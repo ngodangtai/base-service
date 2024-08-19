@@ -26,6 +26,7 @@ public class ResponseDto<T> {
 		return ResponseDto.<T>builder()
 				.status(HttpStatus.OK.value())
 				.code(String.valueOf(HttpStatus.OK.value()))
+				.message(HttpStatus.OK.getReasonPhrase())
 				.data(data)
 				.build();
 	}
@@ -34,6 +35,7 @@ public class ResponseDto<T> {
 		return ResponseDto.<T>builder()
 				.status(HttpStatus.BAD_REQUEST.value())
 				.code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+				.message(HttpStatus.BAD_REQUEST.getReasonPhrase())
 				.data(data)
 				.build();
 	}

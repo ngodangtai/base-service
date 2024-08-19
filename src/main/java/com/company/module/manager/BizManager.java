@@ -9,7 +9,7 @@ import com.company.module.event.dto.base.RedisEvent;
 import com.company.module.producer.PublisherDelegator;
 import com.company.module.request.ApplicationSearchReq;
 import com.company.module.request.BizReq;
-import com.company.module.service.ApplicationSearchService;
+import com.company.module.service.table.ApplicationSearchService;
 import com.company.module.utils.MapperUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,7 +1,6 @@
-package com.company.module.service.impl;
+package com.company.module.service.table;
 
-import com.company.module.client.dto.CountryDto;
-import com.company.module.service.ApplicationSearchService;
+import com.company.module.dto.CountryDto;
 import com.company.module.base.dto.PageView;
 import com.company.module.dto.ApplicationDto;
 import com.company.module.entity.ApplicationEntity;
@@ -57,7 +56,7 @@ public class ApplicationSearchServiceImpl implements ApplicationSearchService {
             httpHeaders.setContentType(MediaType.APPLICATION_JSON);
             HttpEntity<Object> httpEntity = new HttpEntity<>(httpHeaders);
             ResponseEntity<List<CountryDto>> response = restTemplate.exchange(builder.toUriString(),
-                    HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>(){});
+                    HttpMethod.GET, httpEntity, new ParameterizedTypeReference<>() {});
             if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
                 return response.getBody();
             }

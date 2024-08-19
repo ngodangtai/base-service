@@ -1,4 +1,4 @@
-package com.company.module.client.dto;
+package com.company.module.dto;
 
 import io.swagger.annotations.ApiModel;
 import lombok.*;
