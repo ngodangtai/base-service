@@ -22,7 +22,7 @@ public class SchedulerService {
     @Scheduled(fixedDelay = 5000)
 //    @Scheduled(fixedDelayString = "${fixedDelay.in.milliseconds}")
     public void scheduleFixedDelayTask() {
-        log.info("Fixed delay task - " + System.currentTimeMillis() / 1000);
+        log.info("Fixed delay task - {}", System.currentTimeMillis() / 1000);
     }
 
     /*
@@ -31,7 +31,7 @@ public class SchedulerService {
     @Scheduled(fixedRate = 7000)
 //    @Scheduled(fixedRateString = "${fixedRate.in.milliseconds}")
     public void scheduleFixedRateTask() {
-        log.info("Fixed rate task - " + System.currentTimeMillis() / 1000);
+        log.info("Fixed rate task - {}", System.currentTimeMillis() / 1000);
     }
 
     /*
@@ -40,7 +40,7 @@ public class SchedulerService {
     @Async(Constants.Executor.EXECUTOR_SCHEDULER)
     @Scheduled(fixedRate = 4000)
     public void scheduleFixedRateTaskAsync() {
-        log.info("Fixed rate task async - " + System.currentTimeMillis() / 1000);
+        log.info("Fixed rate task async - {}", System.currentTimeMillis() / 1000);
         sleep(7000);
     }
 
@@ -57,7 +57,7 @@ public class SchedulerService {
     @Scheduled(fixedDelay = 6000, initialDelay = 3000)
     public void scheduleFixedRateWithInitialDelayTask() {
         long now = System.currentTimeMillis() / 1000;
-        log.info("Fixed rate task with one second initial delay - " + now);
+        log.info("Fixed rate task with one second initial delay - {}", now);
     }
 
     /*
@@ -69,6 +69,6 @@ public class SchedulerService {
 //    @Scheduled(cron = "${cron.expression}")
     public void scheduleTaskUsingCronExpression() {
         long now = System.currentTimeMillis() / 1000;
-        log.info("schedule tasks using cron jobs - " + now);
+        log.info("schedule tasks using cron jobs - {}", now);
     }
 }
