@@ -37,7 +37,7 @@ public class ApplicationSearchServiceImpl implements ApplicationSearchService {
     @Override
     @Cacheable(cacheNames = "ApplicationSearchService#getApplications")
     public List<ApplicationDto> getApplications() {
-        return applicationRepository.findAll().stream().map(e -> ConvertUtils.convertDto((ApplicationEntity) e)).collect(Collectors.toList());
+        return applicationRepository.findAll().stream().map(ConvertUtils::convertDto).collect(Collectors.toList());
     }
 
     @Override

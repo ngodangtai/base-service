@@ -1,8 +1,7 @@
-package com.company.module.biz.service.impl;
+package com.company.module.service.biz;
 
-import com.company.module.biz.service.ProfileBizService;
-import com.company.module.service.table.ApplicationSearchService;
 import com.company.module.dto.ApplicationDto;
+import com.company.module.service.table.ApplicationSearchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

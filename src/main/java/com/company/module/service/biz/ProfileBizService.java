@@ -1,4 +1,4 @@
-package com.company.module.biz.service;
+package com.company.module.service.biz;
 
 import com.company.module.dto.ApplicationDto;
 
